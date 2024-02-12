@@ -52,6 +52,9 @@ public class Robot_2023 extends TimedRobot {
     private final PWMSparkMax m_rightWheel1 = new PWMSparkMax(1);
     private final PWMSparkMax m_leftWheel0 = new PWMSparkMax(2);
     private final PWMSparkMax m_leftWheel1 = new PWMSparkMax(3);
+
+
+    
     private final PWMSparkMax m_lift = new PWMSparkMax(7);
     private final PWMSparkMax m_arm = new PWMSparkMax(5);
     private final PWMSparkMax m_claw = new PWMSparkMax(4);

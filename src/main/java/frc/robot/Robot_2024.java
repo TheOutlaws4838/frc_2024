@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -15,21 +17,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot_2024 extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private static final int LIFT_SPEED = 0;
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
-  /**
+   
+  private final XboxController m_joystick_arm = new XboxController(0);
+    private final XboxController m_joystick_drive = new XboxController(1);
+  
+    private final PWMSparkMax m_lift = new PWMSparkMax(7);
+ 
+    /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    
   }
 
   /**
@@ -54,19 +54,13 @@ public class Robot_2024 extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+  
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    Object m_lift;
-    if (m_timer.get() < .5){m_lift.set(-LIFT_SPEED);
-    }else {
-      ((Object) m_lift).set(:0);
-    }
+    
   }
 
   /** This function is called once when teleop is enabled. */
@@ -75,8 +69,13 @@ public class Robot_2024 extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+if (m_joystick_arm.getLeftY() > .25)
+m_lift.set(m_joystick_arm.getLeftY()); 
 
+if (m_joystick_arm.getLeftY()< -.25)
+m_lift.set(m_joystick_arm.getLeftY());
+  }
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {}
