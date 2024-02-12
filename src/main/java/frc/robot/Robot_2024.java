@@ -6,6 +6,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,7 +22,13 @@ public class Robot_2024 extends TimedRobot {
    
   private final XboxController m_joystick_arm = new XboxController(0);
     private final XboxController m_joystick_drive = new XboxController(1);
-  
+    private final PWMSparkMax m_rightWheel0 = new PWMSparkMax(0);
+    private final PWMSparkMax m_rightWheel1 = new PWMSparkMax(1);
+    private final PWMSparkMax m_leftWheel0 = new PWMSparkMax(2);
+    private final PWMSparkMax m_leftWheel1 = new PWMSparkMax(3);
+private final MotorControllerGroup m_leftDrive = new MotorControllerGroup(m_leftWheel0, m_leftWheel1);
+    private final MotorControllerGroup m_rightDrive = new MotorControllerGroup(m_rightWheel0, m_rightWheel1);
+    private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_leftDrive, m_rightDrive)
     private final PWMSparkMax m_lift = new PWMSparkMax(7);
  
     /**
@@ -70,12 +78,27 @@ public class Robot_2024 extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    double speed = .7;
+
+    // this is for the lift
 if (m_joystick_arm.getLeftY() > .25)
 m_lift.set(m_joystick_arm.getLeftY()); 
 
 if (m_joystick_arm.getLeftY()< -.25)
 m_lift.set(m_joystick_arm.getLeftY());
+  //Initiates Tank Drive
+  double left_stick = m_joystick_drive.getLeftY() * speed; 
+  double right_stick = m_joystick_drive.getRightY() * speed;
+
+// this is for the drive
+  m_robotDrive.tankDrive(left_stick,right_stick);
+ // need to finish drive code. 
+
   }
+
+
+
+
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {}
